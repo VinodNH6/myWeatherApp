@@ -34,12 +34,12 @@
                     <tr ng-repeat="wt in wlist">
                         <td style="border: 1px solid black" ng-click ="onSubmit(city)"> {{wt.city}} </td>
                         <td style="border: 1px solid black"> 
-                            {{wt.res.main.temp}} 
-                            <!--<table>
+                            <!-- {{wt.res.main.temp}}  -->
+                            <table>
                                 <tr> 
                                     <td style="border: 1px solid black" ng-repeat="h in wt.res"> {{h.main.temp}} </td>
                                 </tr>
-                            </table>-->
+                            </table>
                         </td>
                     </tr>
                 </table>
@@ -49,6 +49,7 @@
       </div>
       
       <script src="bundle.min.js"></script>
+      <!-- <script src="app.js"></script> -->
       
    </body>
 </html>
