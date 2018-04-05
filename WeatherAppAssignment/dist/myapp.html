@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+   
+   <head>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+   </head>
+   
+   <body ng-app = "myapp">
+      
+      <div ng-controller = "HelloController" >
+
+            <form>
+               <div class="form-group">
+                    <label for="city">City Name:</label>
+                    <input class="form-control" type="text" placeholder="Enter city name" id="city" ng-model ="cityName" name="cityname">  
+                    <button class="btn btn-primary"  ng-click ="onSubmit(cityName)" type="submit">Forecast</button>          
+                </div>
+            </form>         
+
+            <div>
+                <h3 > List of Cities Searched </h3>
+                <!--{{wlist}}-->
+                <table style="border: 1px solid black">
+                    <tr> 
+                        <th style="border: 1px solid black"> City </th>
+                        <th style="border: 1px solid black"> 
+                             <table>
+                                <tr> 
+                                    <th style="border: 1px solid black" ng-repeat="h in wt.res"> {{h.dt}} </th>
+                                </tr>
+                            </table>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="wt in wlist">
+                        <td style="border: 1px solid black" ng-click ="onSubmit(city)"> {{wt.city}} </td>
+                        <td style="border: 1px solid black"> 
+                            {{wt.res.main.temp}} 
+                            <!--<table>
+                                <tr> 
+                                    <td style="border: 1px solid black" ng-repeat="h in wt.res"> {{h.main.temp}} </td>
+                                </tr>
+                            </table>-->
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+         <!--<weather weathers="{{greeting}}"> </weather>-->
+      </div>
+      
+      <script src="bundle.min.js"></script>
+      
+   </body>
+</html>
