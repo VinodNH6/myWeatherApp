@@ -21,11 +21,9 @@
 
          angular.module("myapp", [])
 
-         .controller("HelloController", function($scope, $http, $rootScope, $timeout) {
-            $scope.cities = [];
+         .controller("HelloController", function($scope, $http, $rootScope, $timeout, $interval) {
+
             $scope.wlist = [];
-            $scope.timeo = [];
-            $scope.no = false;
 
             $scope.environment = {
                 appId: '45f4dd45e0f724512ba044c5a2caf4bc',
@@ -36,51 +34,65 @@
 
             $scope.onSubmit = function(cityName) {
                 console.log($scope.wlist);
-               // var temp = [];
+                 var temp = [];
                 $http.get($scope.environment.baseUrl +
                 'weather?q='+ cityName + 
                 '&appid='+ $scope.environment.appId +
                 '&units=' + $scope.environment.units).
                     then(function(response) {
                         console.log("res");
-                        //$scope.timeo.push(response.data);
+                        temp.push(response.data);
                         var obj = {
                             city: cityName,
-                            res : response.data//$scope.timeo
+                            res : temp 
                         };
-                        // $scope.wlist.forEach(function(element) {
-                        //     console.log("iterate");
-                        //     if(element.city === cityName) {
-                        //         console.log("matched... so edit");
-                        //         //$scope.wlist.push(obj);
-                        //         element.res.push(response.data);
-                        //     }
-                        //     else{
-                        //         console.log("not matched... so add ");
-                        //        $scope.wlist.push(obj);
-                        //        //$scope.no = true;
-                        //     }
-                        // });
-
-                        // if($scope.wlist.length === 0) {
-                        //     $scope.wlist.push(obj);
-                        // }
                         
                         $scope.wlist.push(obj);
-                        $scope.cities.push(cityName);
+
+                        console.log("timeout started: Every Hour");
+                        $scope.wlist.forEach(function(city) {
+                            $interval(function () {
+                                $scope.onSubmit2(city.city);
+                            }, 1000*60*60);
+                        });
                     });
             }
 
+            $scope.onSubmit2 = function(cityName) {
+                console.log($scope.wlist);
+                var temp = [];
+                var edit = false;
 
-            // $timeout(function () {
-            //     $scope.onSubmit("belgaum");
-            //     $scope.timeo.push(response.data)
-            //     var obj = {
-            //         city: cityName,
-            //         res : $scope.timeo
-            //     };
-            //     //$scope.wlist.push(obj);
-            // }, 9000);
+                $http.get($scope.environment.baseUrl +
+                'weather?q='+ cityName + 
+                '&appid='+ $scope.environment.appId +
+                '&units=' + $scope.environment.units).
+                    then(function(response) {
+                        console.log("res");
+
+                        temp.push(response.data);
+                        var obj = {
+                            city: cityName,
+                            res : temp
+                        };
+                        $scope.wlist.forEach(function(element) {
+                            console.log("iterate");
+                            if(element.city === cityName) {
+                                console.log("matched... so edit");
+                                element.res.push(response.data);
+                                edit = true;
+                            }
+                            else{
+                                console.log("not matched... so add ");
+                            }
+                        });
+
+                        if(!edit) {
+                            $scope.wlist.push(obj);
+                        }
+
+                    });
+            }
 
          })
 
